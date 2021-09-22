@@ -3,9 +3,11 @@ package br.com.customer.mapper;
 import br.com.customer.Utils;
 import br.com.customer.model.entity.Customer;
 import br.com.customer.model.response.CustomerResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class CustomerResponseMapper implements Mapper<Customer, CustomerResponse>{
 
     @Override

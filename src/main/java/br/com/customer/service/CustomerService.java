@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CustomerService {
 
-    Customer create(CustomerRequest customerRequest);
+    CustomerResponse create(CustomerRequest customerRequest);
 
     Page<CustomerResponse> getAll(Pageable pageable);
 

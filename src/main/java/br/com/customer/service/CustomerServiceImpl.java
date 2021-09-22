@@ -13,7 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.sql.SQLException;
 import java.util.Optional;
+
+import static org.springframework.util.Assert.notNull;
 
 
 @Service
@@ -31,34 +34,54 @@ public class CustomerServiceImpl implements CustomerService{
     private Mapper<Customer, CustomerResponse> responseMapper;
 
     @Override
-    public Customer create(CustomerRequest customerRequest) {
+    public CustomerResponse create(CustomerRequest customerRequest) {
         LOGGER.info("Criando um registro do cliente");
+        notNull(customerRequest, "Request invalida!");
+        Customer customerReq = this.requestMapper.mapperTo(customerRequest);
+        Customer customer = customerRepository.saveAndFlush(customerReq);
+        this.responseMapper.mapperTo(customer);
 
-        Assert.notNull(customerRequest, "Request invalida!");
-        Customer customer = this.requestMapper.mapperTo(customerRequest);
-
-        return customerRepository.save(customer);
+        return this.responseMapper.mapperTo(customer);
     }
 
     @Override
     public Page<CustomerResponse> getAll(Pageable pageable) {
         LOGGER.info("Buscando todos os registros");
-
-        return null;
+        notNull(pageable, "página invalida!");
+        return customerRepository.findAll(pageable).map(customer -> this.responseMapper.mapperTo(customer));
     }
 
     @Override
     public Optional<CustomerResponse> get(Long id) {
-        return Optional.empty();
+        LOGGER.info("Buscando um registro");
+        return customerRepository.findById(id).map(this.responseMapper::mapperTo);
     }
 
     @Override
     public Optional<CustomerResponse> update(Long id, CustomerRequest customerRequest) {
-        return Optional.empty();
+        LOGGER.info("Atualizando o regsitro");
+
+        Customer customerUpdate = this.requestMapper.mapperTo(customerRequest);
+
+        CustomerResponse response = customerRepository.findById(id).map(customer -> {
+            customer.setName(customerUpdate.getName());
+            customer.setBirthDate(customerUpdate.getBirthDate());
+
+            return this.responseMapper.mapperTo(customerRepository.saveAndFlush(customer));
+        }).orElseThrow(() -> new RuntimeException("Customer não localizado."));
+
+        return Optional.of(response);
     }
 
     @Override
     public void delete(Long id) {
+        LOGGER.info("Removendo regsitro");
+
+        try{
+            customerRepository.deleteById(id);
+        }catch (Exception e){
+            LOGGER.error("Erro ao remove o registro {} erro{}", id, e);
+        }
 
     }
 }
