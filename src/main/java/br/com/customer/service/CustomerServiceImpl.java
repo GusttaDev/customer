@@ -1,5 +1,6 @@
 package br.com.customer.service;
 
+import br.com.customer.exception.BusinessException;
 import br.com.customer.mapper.Mapper;
 import br.com.customer.model.entity.Customer;
 import br.com.customer.model.enums.Message;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,6 +39,8 @@ public class CustomerServiceImpl implements CustomerService{
         LOGGER.info("Criando um registro do cliente");
         notNull(customerRequest, "Request invalida!");
         Customer customerReq = this.requestMapper.mapperTo(customerRequest);
+
+        validateCpfAlreadyExists(customerReq.getCpf());
 
         return customerRepository.save(customerReq).map(customer -> this.responseMapper.mapperTo(customer));
     }
@@ -80,6 +84,14 @@ public class CustomerServiceImpl implements CustomerService{
             customerRepository.deleteById(id);
         }catch (Exception e){
             LOGGER.error("Erro ao remove o registro {} erro{}", id, e);
+        }
+    }
+
+    private void validateCpfAlreadyExists(String cpf) {
+        Optional<Customer> customer = customerRepository.findByCpf(cpf);
+
+        if(customer.isPresent()){
+            throw Message.CPF_ALREADY_EXISTS.asBusinessException();
         }
     }
 
