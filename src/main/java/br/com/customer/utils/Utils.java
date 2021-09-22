@@ -1,4 +1,4 @@
-package br.com.customer;
+package br.com.customer.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,6 +1,6 @@
 package br.com.customer.mapper;
 
-import br.com.customer.Utils;
+import br.com.customer.utils.Utils;
 import br.com.customer.model.entity.Customer;
 import br.com.customer.model.response.CustomerResponse;
 import org.springframework.stereotype.Component;

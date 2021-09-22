@@ -1,6 +1,6 @@
 package br.com.customer.model.response;
 
-import br.com.customer.Utils;
+import br.com.customer.utils.Utils;
 
 import java.time.LocalDate;
 

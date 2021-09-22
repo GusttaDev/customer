@@ -1,6 +1,6 @@
 package br.com.customer.util;
 
-import br.com.customer.Utils;
+import br.com.customer.utils.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
