@@ -1,7 +1,5 @@
 package br.com.customer.model.entity;
 
-import br.com.customer.mapper.Mapper;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.function.Function;

@@ -52,4 +52,5 @@ public class CustomerRequest {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
 }

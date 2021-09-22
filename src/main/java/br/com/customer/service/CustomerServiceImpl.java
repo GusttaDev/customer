@@ -81,6 +81,7 @@ public class CustomerServiceImpl implements CustomerService{
         LOGGER.info("Removendo regsitro");
 
         try{
+            findCustomerByIdOrThrowNotFound(id);
             customerRepository.deleteById(id);
         }catch (Exception e){
             LOGGER.error("Erro ao remove o registro {} erro{}", id, e);
