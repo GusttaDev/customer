@@ -36,9 +36,9 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerResponse create(CustomerRequest customerRequest) {
         LOGGER.info("Criando um registro do cliente");
         notNull(customerRequest, "Request invalida!");
-        Customer customer = this.requestMapper.mapperTo(customerRequest);
+        Customer customerReq = this.requestMapper.mapperTo(customerRequest);
 
-        return customerRepository.save(customer).map(c -> this.responseMapper.mapperTo(c));
+        return customerRepository.save(customerReq).map(customer -> this.responseMapper.mapperTo(customer));
     }
 
 
