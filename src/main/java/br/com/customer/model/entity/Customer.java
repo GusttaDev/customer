@@ -1,7 +1,10 @@
 package br.com.customer.model.entity;
 
+import br.com.customer.mapper.Mapper;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.function.Function;
 
 @Entity
 @Table(name = "customer")
@@ -17,6 +20,10 @@ public class Customer {
     private String cpf;
     @Column(name = "BIRTH_DATE", nullable = false)
     private LocalDate birthDate;
+
+    public <R> R map(Function<Customer, R> func){
+        return func.apply(this);
+    }
 
     public Long getId() {
         return id;
